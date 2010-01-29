@@ -1,0 +1,7 @@
+Dancer::Logger::Syslog
+
+A Dancer logger engine for Sys::Syslog
+
+This module implements a logger engine that send log messages to syslog,
+through the Sys::Syslog module.
+
