@@ -61,6 +61,14 @@ through the Sys::Syslog module.
 The setting B<logger> should be set to C<syslog> in order to use this session
 engine in a Dancer application.
 
+=head1 METHODS
+
+=head2 init()
+
+The init method is called by Dancer when creating the logger engine
+with this class. It will initiate a Syslog connection under the B<USER>
+facility.
+
 =head1 DEPENDENCY
 
 This module depends on L<Sys::Syslog>.
