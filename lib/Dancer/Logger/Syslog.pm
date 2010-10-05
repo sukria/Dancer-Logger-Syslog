@@ -8,7 +8,7 @@ use base 'Dancer::Logger::Abstract';
 use File::Basename 'basename';
 use Sys::Syslog qw(:DEFAULT setlogsock);
 
-$VERSION = '0.1';
+$VERSION = '0.2';
 
 sub init {
     my ($self) = @_;
@@ -19,27 +19,17 @@ sub init {
 
 sub DESTROY { closelog() }
 
-sub _format {
-    my ($level, $message) = @_;
-    my ($package, $file, $line) = caller(4);
-    $package ||= '-';
-    $file    ||= '-';
-    $line    ||= '-';
-
-    my $time = localtime;
-    chomp $message;
-    return "($level) $message in $file l. $line\n";
-}
-
 sub _log {
     my ($self, $level, $message) = @_;
     my $syslog_levels = {
+        core    => 'debug',
         debug   => 'debug',
         warning => 'warning',
         error   => 'err',
     };
-    $level = $syslog_levels->{$level};
-    return syslog($level, _format($level, $message));
+    $level = $syslog_levels->{$level} || 'debug';
+    my $fm = $self->format_message($level => $message);
+    return syslog($level, $fm);
 }
 
 1;
