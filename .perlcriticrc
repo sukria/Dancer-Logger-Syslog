@@ -1,0 +1,29 @@
+verbose  = [%p] %m at %f line %l, near '%r'\n
+severity = 2
+
+[TestingAndDebugging::RequireUseWarnings]
+[-Miscellanea::RequireRcsKeywords]
+[-Documentation::RequirePodSections]
+[-Documentation::RequirePodLinksIncludeText]
+[-Modules::RequireVersionVar]
+[-ControlStructures::ProhibitPostfixControls]
+[-ErrorHandling::RequireCheckingReturnValueOfEval]
+
+[Variables::ProhibitPunctuationVars]
+    allow = $@ $! $0
+
+[-ValuesAndExpressions::ProhibitNoisyQuotes]
+
+# we export a set of symbols, and we do syntactic sugar
+[-Modules::ProhibitAutomaticExportation]
+[-Subroutines::ProhibitSubroutinePrototypes]
+[-Subroutines::RequireArgUnpacking]
+[-Subroutines::RequireFinalReturn]
+[-TestingAndDebugging::ProhibitNoStrict]
+[-TestingAndDebugging::ProhibitNoWarnings]
+
+[ValuesAndExpressions::ProhibitMagicNumbers]
+	allowed_values = 0 1 2 3
+
+# we define _log as Dancer::Logger::Abstract uses it
+[-Subroutines::ProhibitUnusedPrivateSubroutines]
