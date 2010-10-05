@@ -7,9 +7,7 @@ WriteMakefile(
     AUTHOR              => q{Alexis Sukrieh <sukria@sukria.net>},
     VERSION_FROM        => 'lib/Dancer/Logger/Syslog.pm',
     ABSTRACT            => 'Dancer logger engine for Sys::Syslog',
-    ($ExtUtils::MakeMaker::VERSION >= 6.3002
-      ? ('LICENSE'=> 'perl')
-      : ()),
+    'LICENSE'           => 'perl',
     PL_FILES            => {},
     PREREQ_PM => {
         'Test::More'  => 0,
