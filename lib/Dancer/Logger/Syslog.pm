@@ -8,16 +8,38 @@ use base 'Dancer::Logger::Abstract';
 use File::Basename 'basename';
 use Sys::Syslog qw(:DEFAULT setlogsock);
 
+use Dancer::Config 'setting';
+
 $VERSION = '0.2';
 
 sub init {
     my ($self) = @_;
-    my $basename = basename($0);
+    my $basename = setting('appname') || $ENV{DANCER_APPDIR} || basename($0);
     setlogsock('unix');
     openlog($basename, 'pid', 'USER');
 }
 
 sub DESTROY { closelog() }
+
+# our format should be a bit cooked for syslog
+sub format_message {
+    my ($self, $level, $message) = @_;
+    chomp $message;
+
+    my ($package, $file, $line) = caller(3);
+    $package ||= '-';
+    $file    ||= '-';
+    $line    ||= '-';
+
+    my $time = Dancer::SharedData->timer->tick;
+    my $r    = Dancer::SharedData->request;
+    if (defined $r) {
+        return "\@$time> [hit #" . $r->id . "] $message in $file l. $line\n";
+    }
+    else {
+        return "\@$time> $message in $file l. $line\n";
+    }
+}
 
 sub _log {
     my ($self, $level, $message) = @_;
@@ -58,6 +80,12 @@ engine in a Dancer application.
 The init method is called by Dancer when creating the logger engine
 with this class. It will initiate a Syslog connection under the B<USER>
 facility.
+
+=head2 format_message()
+
+This method defines how to format messages for Syslog, it's a bit different 
+than the standard one provided by L<Dancer::Logger::Abstract> because Syslog
+already provides a couple of information.
 
 =head1 DEPENDENCY
 
