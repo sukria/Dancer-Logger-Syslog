@@ -6,6 +6,10 @@ use Dancer::ModuleLoader;
 plan tests => 8;
 
 use Dancer::Logger::Syslog;
+
+use Dancer::Config 'setting';
+
+setting appname => 'TestScript';
 my $l = Dancer::Logger::Syslog->new;
 
 ok defined($l), 'Dancer::Logger::Syslog object';
